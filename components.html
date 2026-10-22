@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#141517">
+  <meta name="description" content="Interactive optical playground and documentation for Tactile Glass UI — tune 18 physical WebGL2 refraction, dispersion, and liquid caustic parameters in real time.">
+  <meta property="og:title" content="Tactile Glass UI — Components Playground">
+  <meta property="og:description" content="Interactive optical playground and documentation for Tactile Glass UI — tune 18 physical WebGL2 refraction, dispersion, and liquid caustic parameters in real time.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tactile Glass UI — Components Playground">
+  <meta name="twitter:description" content="Interactive optical playground and documentation for Tactile Glass UI.">
+  <title>Tactile Glass UI — Components Playground</title>
+  <link rel="stylesheet" href="/src/styles/tokens.css">
+  <link rel="stylesheet" href="/src/styles/components.css">
+  <link rel="stylesheet" href="/src/showcase/showcase.css">
+</head>
+
+<body>
+
+  <!-- Global Site Header -->
+  <header class="site-header">
+    <a class="site-header-brand" href="/" aria-label="Tactile Glass UI Home">
+      <span class="brand-name">Tactile Glass UI</span>
+      <span class="brand-badge">v0.1</span>
+    </a>
+
+    <div class="site-header-actions">
+      <button type="button" class="stage-action-btn" id="btn-download-skill" aria-label="Download SKILL.md file">
+        <span class="stage-action-icon"><i data-lucide="download"></i></span>
+        <span class="stage-action-label">Skill</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Left Navigation Sidebar -->
+  <aside class="nav-sidebar">
+    <!-- Scrollable Component Navigation -->
+    <div class="nav-body">
+      <div class="nav-group">
+        <nav class="nav-list" id="component-nav">
+          <button type="button" class="nav-item active" data-component="button">
+            <span class="nav-item-icon">
+              <i data-lucide="activity"></i>
+            </span>
+            <span class="nav-item-name">Tactile Button</span>
+          </button>
+
+          <button type="button" class="nav-item" data-component="switch">
+            <span class="nav-item-icon">
+              <i data-lucide="toggle-right"></i>
+            </span>
+            <span class="nav-item-name">Tactile Switch</span>
+          </button>
+
+          <button type="button" class="nav-item" data-component="tabs">
+            <span class="nav-item-icon">
+              <i data-lucide="layers"></i>
+            </span>
+            <span class="nav-item-name">Tactile Tabs</span>
+          </button>
+
+          <button type="button" class="nav-item" data-component="prompt">
+            <span class="nav-item-icon">
+              <i data-lucide="bot"></i>
+            </span>
+            <span class="nav-item-name">Prompt Input</span>
+          </button>
+
+          <button type="button" class="nav-item" data-component="heading">
+            <span class="nav-item-icon">
+              <i data-lucide="heading"></i>
+            </span>
+            <span class="nav-item-name">Tactile Heading</span>
+          </button>
+
+          <button type="button" class="nav-item" data-component="card">
+            <span class="nav-item-icon">
+              <i data-lucide="credit-card"></i>
+            </span>
+            <span class="nav-item-name">Credit Card</span>
+          </button>
+
+          <button type="button" class="nav-item" data-component="audio">
+            <span class="nav-item-icon">
+              <i data-lucide="disc-3"></i>
+            </span>
+            <span class="nav-item-name">Audio Player</span>
+          </button>
+
+          <button type="button" class="nav-item" data-component="background">
+            <span class="nav-item-icon">
+              <i data-lucide="maximize-2"></i>
+            </span>
+            <span class="nav-item-name">Background</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+  </aside>
+
+  <div class="showcase-container" id="showcase-container">
+    <!-- Component Header: Title on Left, Copy Prompt on Right -->
+    <header class="stage-header">
+      <h1 class="stage-title" id="stage-title">Tactile Button</h1>
+
+      <div class="stage-toolbar" role="region" aria-label="AI integration actions">
+        <div class="stage-actions">
+          <button type="button" class="stage-action-btn" id="btn-copy-prompt" aria-label="Copy AI prompt with current settings">
+            <span class="stage-action-icon" id="copy-prompt-icon-copy"><i data-lucide="copy"></i></span>
+            <span class="stage-action-icon" id="copy-prompt-icon-check" style="display: none;"><i data-lucide="check"></i></span>
+            <span class="stage-action-label" id="copy-prompt-label">Copy Prompt</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Bounded Stage Block housing the WebGL2 canvas and interactive components -->
+    <div class="stage-block" id="stage-block">
+      <canvas id="webgl-canvas"></canvas>
+
+      <!-- View 1: Tactile Button Stage -->
+      <div class="stage-view active" id="view-button">
+      <div class="buttons-row">
+        <button type="button" class="tactile-btn" id="lens-btn">
+          <span class="btn-label">Launch Interface</span>
+          <i data-lucide="arrow-right" class="btn-icon"></i>
+        </button>
+        <button type="button" class="tactile-btn btn-circle" id="lens-btn-circle" aria-label="Analytics Action">
+          <i data-lucide="chart-pie" class="btn-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- View 2: Tactile Switch Stage -->
+    <div class="stage-view" id="view-switch">
+      <button type="button" class="tactile-switch active" id="switch-xl" role="switch" aria-checked="true"
+        aria-label="Tactile Switch">
+        <span class="switch-thumb"></span>
+      </button>
+    </div>
+
+    <!-- View 3: Tactile Tabs Stage -->
+    <div class="stage-view" id="view-tabs">
+      <div class="tactile-tabs" id="lens-tabs" role="tablist" aria-label="Tactile Navigation">
+        <span class="tabs-indicator" id="tabs-indicator" aria-hidden="true"></span>
+        <button type="button" class="tab-item active" data-tab="code" role="tab" aria-selected="true">Code</button>
+        <button type="button" class="tab-item" data-tab="review" role="tab" aria-selected="false">Review</button>
+        <button type="button" class="tab-item" data-tab="chat" role="tab" aria-selected="false">Chat</button>
+      </div>
+    </div>
+
+    <!-- View 4: Tactile Prompt Input Stage -->
+    <div class="stage-view" id="view-prompt">
+      <div class="tactile-prompt-box" id="lens-prompt">
+        <div class="prompt-body">
+          <textarea class="prompt-textarea" id="prompt-input" rows="1" placeholder="Ask anything, @ to mention, / for actions"></textarea>
+        </div>
+        <div class="prompt-bottom-bar">
+          <div class="prompt-pills-row">
+            <button type="button" class="prompt-mention-btn" id="prompt-mention-btn"
+              aria-label="Add context">
+              <i data-lucide="plus" class="prompt-submit-icon"></i>
+            </button>
+            <button type="button" class="prompt-pill" id="prompt-agent-pill">
+              <span class="prompt-pill-label">Agent</span>
+            </button>
+          </div>
+          <button type="button" class="prompt-submit-btn" id="prompt-submit-btn" aria-label="Submit prompt">
+            <i data-lucide="arrow-up" class="prompt-submit-icon"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View 5: Tactile Heading Stage -->
+    <div class="stage-view" id="view-heading">
+      <div class="heading-stage-box" id="heading-container">
+        <h2 class="display-heading" id="lens-heading-title">
+          Built for <span class="heading-word-target" id="lens-heading-word" title="Click to cycle word">Fluid</span><br>Surfaces
+        </h2>
+      </div>
+    </div>
+
+    <!-- View 6: Tactile Credit Card Stage -->
+    <div class="stage-view" id="view-card">
+      <div class="tactile-card tactile-credit-card" id="lens-card">
+        <div class="credit-card-inner">
+          <!-- Top Row: Contactless + Bank Name -->
+          <div class="credit-card-top">
+            <svg class="credit-card-contactless" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-label="Contactless payment">
+              <path d="M7 7a7 7 0 0 1 0 10" />
+              <path d="M11 4a11 11 0 0 1 0 16" />
+              <path d="M15 1a15 15 0 0 1 0 22" />
+            </svg>
+
+            <div class="credit-card-brand">
+              <span class="credit-card-bank-name">TACTILE</span>
+            </div>
+          </div>
+
+          <!-- Middle: Card Number -->
+          <div class="credit-card-number" aria-label="Card number: 4829 8102 9412 8042">
+            <span>4829</span>
+            <span>8102</span>
+            <span>9412</span>
+            <span>8042</span>
+          </div>
+
+          <!-- Bottom: Cardholder, Expiry, Payment Network Circles -->
+          <div class="credit-card-bottom">
+            <div class="credit-card-field">
+              <span class="credit-card-value">ALEXANDER WRIGHT</span>
+            </div>
+
+            <div class="credit-card-field">
+              <span class="credit-card-value">08 / 29</span>
+            </div>
+
+            <div class="credit-card-network" aria-label="Payment network emblem">
+              <div class="network-circle network-circle-left"></div>
+              <div class="network-circle network-circle-right"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View 7: Tactile Spatial Audio Player Stage -->
+    <div class="stage-view" id="view-audio">
+      <div class="tactile-audio-player" id="lens-audio">
+        <canvas class="audio-spectrum-front" id="audio-spectrum-front" aria-hidden="true"></canvas>
+        <div class="audio-player-inner">
+          <!-- Top Row: Track Title & Repeat Mode Button -->
+          <div class="audio-top-row">
+            <div class="audio-track-title" id="audio-track-title">Solaris Phase</div>
+
+            <button type="button" class="audio-like-btn" id="audio-btn-like" aria-label="Repeat track"
+              aria-pressed="true">
+              <i data-lucide="repeat"></i>
+            </button>
+          </div>
+
+          <!-- Lower Section: Sleek Timeline & Timecodes -->
+          <div class="audio-timeline-group">
+            <div class="audio-progress-hit" id="audio-progress-hit" role="slider" aria-label="Playback progress"
+              aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+              <div class="audio-progress-track">
+                <div class="audio-progress-fill" id="audio-progress-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div class="audio-time-row">
+              <span id="audio-time-current">00:00</span>
+              <span id="audio-time-total">-03:48</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom-Edge Straddling Circular Glass Transport Controls -->
+        <div class="audio-controls-dock">
+          <button type="button" class="audio-transport-btn" id="audio-btn-prev" aria-label="Previous track">
+            <i data-lucide="skip-back"></i>
+          </button>
+          <button type="button" class="audio-play-btn" id="audio-btn-play" aria-label="Start playback">
+            <span id="audio-icon-pause" style="display: none;"><i data-lucide="pause"></i></span>
+            <span id="audio-icon-play"><i data-lucide="play"></i></span>
+          </button>
+          <button type="button" class="audio-transport-btn" id="audio-btn-next" aria-label="Next track">
+            <i data-lucide="skip-forward"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View 8: Tactile Background Stage -->
+    <div class="stage-view" id="view-background">
+      <div class="tactile-background" id="lens-background" aria-label="Background"></div>
+    </div>
+    </div>
+
+    <p class="stage-subtitle" id="stage-subtitle">Real-time WebGL2 optical glass capsule and icon button — physical bevel refraction, chromatic dispersion, liquid caustic aura, and interactive cursor shockwaves.</p>
+
+    <!-- Install & Quick Start Sections (Below the live component stage) -->
+    <div class="doc-sections">
+      <section class="doc-section" aria-label="Install">
+        <h2 class="doc-section-title">Install</h2>
+        <div class="doc-code-box doc-install-box">
+          <code class="doc-install-cmd" id="install-cmd-content">npm install tactile-glass-ui</code>
+          <button type="button" class="doc-copy-icon-btn" id="btn-copy-install" aria-label="Copy install command">
+            <span class="stage-action-icon" id="copy-install-icon-copy"><i data-lucide="copy"></i></span>
+            <span class="stage-action-icon" id="copy-install-icon-check" style="display: none;"><i data-lucide="check"></i></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="doc-section" aria-label="Ready-made component">
+        <h2 class="doc-section-title">Ready-made component</h2>
+        <p class="doc-section-desc">Use the pre-built <code id="component-tag-name">&lt;TactileButton&gt;</code> component with the currently tuned glass optics:</p>
+        <div class="doc-code-box doc-quickstart-box">
+          <button type="button" class="doc-copy-icon-btn doc-quickstart-copy" id="btn-copy-code" aria-label="Copy component code">
+            <span class="stage-action-icon" id="copy-code-icon-copy"><i data-lucide="copy"></i></span>
+            <span class="stage-action-icon" id="copy-code-icon-check" style="display: none;"><i data-lucide="check"></i></span>
+          </button>
+          <pre class="code-panel-pre"><code id="code-panel-content"></code></pre>
+        </div>
+      </section>
+
+      <section class="doc-section" aria-label="Custom surface">
+        <h2 class="doc-section-title">Custom surface</h2>
+        <p class="doc-section-desc">Wrap any custom React component or HTML element in <code>&lt;TactileGlassFx&gt;</code> to apply the currently tuned glass optics to your own UI:</p>
+        <div class="doc-code-box doc-quickstart-box">
+          <button type="button" class="doc-copy-icon-btn doc-quickstart-copy" id="btn-copy-wrapper" aria-label="Copy custom wrapper code">
+            <span class="stage-action-icon" id="copy-wrapper-icon-copy"><i data-lucide="copy"></i></span>
+            <span class="stage-action-icon" id="copy-wrapper-icon-check" style="display: none;"><i data-lucide="check"></i></span>
+          </button>
+          <pre class="code-panel-pre"><code id="wrapper-panel-content"></code></pre>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Settings Sidebar (Right Column) -->
+  <div class="settings-sidebar">
+    <!-- Block 1: Glass Optics -->
+    <div class="settings-panel">
+      <button type="button" class="panel-header" aria-expanded="true">
+        <span>Glass Optics</span>
+        <span class="panel-header-chevron" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+      </button>
+
+      <div class="panel-body">
+        <!-- Component State (Visible for Switch) -->
+        <div class="control-row" id="row-switch-state" style="display: none;">
+          <span class="control-label">State</span>
+          <div class="state-segmented">
+            <button type="button" class="state-btn" id="btn-state-off">OFF</button>
+            <button type="button" class="state-btn active" id="btn-state-on">ON</button>
+          </div>
+        </div>
+
+        <!-- Refraction -->
+        <div class="control-row">
+          <span class="control-label">Refraction</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-refraction" min="0" max="100" value="4">
+          </div>
+          <span class="control-value" id="val-refraction">4</span>
+        </div>
+
+        <!-- Glass Thickness -->
+        <div class="control-row">
+          <span class="control-label">Thickness</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-thickness" min="0" max="100" value="8">
+          </div>
+          <span class="control-value" id="val-thickness">8</span>
+        </div>
+
+        <!-- Bevel Width -->
+        <div class="control-row">
+          <span class="control-label">Bevel Width</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-bevel" min="0" max="30" value="2">
+          </div>
+          <span class="control-value" id="val-bevel">2</span>
+        </div>
+
+        <!-- Frost (Blur) -->
+        <div class="control-row">
+          <span class="control-label">Frost</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-frost" min="0" max="100" value="2">
+          </div>
+          <span class="control-value" id="val-frost">2</span>
+        </div>
+
+        <!-- Dispersion -->
+        <div class="control-row">
+          <span class="control-label">Dispersion</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-dispersion" min="0" max="100" value="88">
+          </div>
+          <span class="control-value" id="val-dispersion">88</span>
+        </div>
+
+        <!-- Light Sheen -->
+        <div class="control-row">
+          <span class="control-label">Light Sheen</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-sheen" min="0" max="100" value="12">
+          </div>
+          <span class="control-value" id="val-sheen">12</span>
+        </div>
+
+        <!-- Light Angle -->
+        <div class="control-row">
+          <span class="control-label">Light Angle</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-angle" min="-180" max="180" value="24">
+          </div>
+          <span class="control-value" id="val-angle">24°</span>
+        </div>
+
+        <!-- Glass Darkness -->
+        <div class="control-row">
+          <span class="control-label">Darkness</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-darkness" min="0" max="100" value="0">
+          </div>
+          <span class="control-value" id="val-darkness">0</span>
+        </div>
+
+        <!-- Edge Highlight -->
+        <div class="control-row">
+          <span class="control-label">Edge Rim</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-rim" min="0" max="100" value="16">
+          </div>
+          <span class="control-value" id="val-rim">16</span>
+        </div>
+
+        <button type="button" class="reset-btn" id="btn-reset-glass">Reset</button>
+      </div>
+    </div>
+
+    <!-- Block 2: Liquid Caustic Settings -->
+    <div class="settings-panel">
+      <button type="button" class="panel-header" aria-expanded="true">
+        <span>Fluid Settings</span>
+        <span class="panel-header-chevron" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+      </button>
+
+      <div class="panel-body">
+        <!-- Fluid Brightness -->
+        <div class="control-row">
+          <span class="control-label">Brightness</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-fluid-bright" min="0" max="300" value="36">
+          </div>
+          <span class="control-value" id="val-fluid-bright">36</span>
+        </div>
+
+        <!-- Fluid Speed -->
+        <div class="control-row">
+          <span class="control-label">Wave Speed</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-fluid-speed" min="0" max="300" value="80">
+          </div>
+          <span class="control-value" id="val-fluid-speed">80%</span>
+        </div>
+
+        <!-- Fluid Scale -->
+        <div class="control-row">
+          <span class="control-label">Wave Scale</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-fluid-scale" min="0" max="100" value="24">
+          </div>
+          <span class="control-value" id="val-fluid-scale">24%</span>
+        </div>
+
+        <!-- Fluid Aura Width -->
+        <div class="control-row">
+          <span class="control-label">Aura Width</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-fluid-aura-width" min="0" max="96" value="8">
+          </div>
+          <span class="control-value" id="val-fluid-aura-width">8px</span>
+        </div>
+
+        <!-- Center Clarity -->
+        <div class="control-row">
+          <span class="control-label">Center Clarity</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-fluid-center" min="0" max="100" value="32">
+          </div>
+          <span class="control-value" id="val-fluid-center">32%</span>
+        </div>
+
+        <!-- Border Beam Flow -->
+        <div class="control-row">
+          <span class="control-label">Border Beam</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-aurora-flow" min="0" max="100" value="100">
+          </div>
+          <span class="control-value" id="val-aurora-flow">100%</span>
+        </div>
+
+        <button type="button" class="reset-btn" id="btn-reset-fluid">Reset</button>
+      </div>
+    </div>
+
+    <!-- Block 3: Interactivity (Hover & Click) -->
+    <div class="settings-panel">
+      <button type="button" class="panel-header" aria-expanded="true">
+        <span>Interactivity</span>
+        <span class="panel-header-chevron" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+      </button>
+
+      <div class="panel-body">
+        <!-- Fluid Brightness on Interaction -->
+        <div class="control-row">
+          <span class="control-label">Hover Glow</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-hover-bright" min="0" max="300" value="264">
+          </div>
+          <span class="control-value" id="val-hover-bright">264</span>
+        </div>
+
+        <!-- Fluid mouse follow/wake -->
+        <div class="control-row">
+          <span class="control-label">Cursor Flow</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-light-track" min="0" max="100" value="100">
+          </div>
+          <span class="control-value" id="val-light-track">100%</span>
+        </div>
+
+        <!-- Fluid click splash -->
+        <div class="control-row">
+          <span class="control-label">Click Ripple</span>
+          <div class="slider-wrap">
+            <input type="range" id="sl-click-wave" min="0" max="100" value="100">
+          </div>
+          <span class="control-value" id="val-click-wave">100%</span>
+        </div>
+
+        <button type="button" class="reset-btn" id="btn-reset-interact">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Site Footer -->
+  <footer class="site-footer">
+    <p class="site-footer-copy">
+      Built by <a class="site-footer-link site-footer-author" href="https://uixninja.com/" target="_blank" rel="noopener noreferrer">uixNinja</a>. Open source under MIT.
+    </p>
+
+    <div class="site-footer-links">
+      <a class="site-footer-link" href="https://github.com/uixninja/tactile-glass-ui" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9.8 20.38c0-.29-.01-1.07-.02-2.09-3.41.74-4.14-1.65-4.14-1.65-.56-1.41-1.37-1.79-1.37-1.79-1.11-.76.08-.74.08-.74 1.23.08 1.88 1.27 1.88 1.27 1.1 1.87 2.87 1.33 3.57 1.02.11-.8.43-1.33.78-1.64-2.72-.31-5.59-1.37-5.59-6.06 0-1.34.48-2.43 1.27-3.29-.14-.31-.55-1.56.11-3.25 0 0 1.03-.33 3.38 1.26.98-.27 2.03-.41 3.07-.42 1.04.01 2.09.15 3.07.42 2.33-1.59 3.36-1.26 3.36-1.26.66 1.69.24 2.94.13 3.25.78.86 1.26 1.95 1.26 3.29 0 4.71-2.87 5.76-5.6 6.05.43.37.83 1.12.83 2.27 0 1.64-.02 2.98-.02 3.36 0 .34-.25.62-.62.62h-4.81c-.36 0-.62-.28-.62-.62Z"/>
+        </svg>
+      </a>
+      <a class="site-footer-link" href="https://www.npmjs.com/package/tactile-glass-ui" target="_blank" rel="noopener noreferrer" aria-label="NPM">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 4h16v16h-4V8h-4v12H4V4Z"/>
+        </svg>
+      </a>
+      <a class="site-footer-link" href="https://x.com/uixNinja" target="_blank" rel="noopener noreferrer" aria-label="X">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M17.18 3h2.75l-6.02 7.65L21 21h-5.54l-4.35-6.31L6.14 21H3.38l6.44-8.18L3 3h5.69l3.92 5.77L17.18 3Z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/showcase/showcase.ts"></script>
+</body>
+
+</html>

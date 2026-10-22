@@ -1,0 +1,9 @@
+node_modules/
+dist/
+dist-lib/
+.tempmediaStorage/
+.DS_Store
+*.log
+.vercel
+GEMINI.md
+.npmrc

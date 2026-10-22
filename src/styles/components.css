@@ -1,0 +1,760 @@
+/* ==========================================================================
+   STANDALONE COMPONENT STRUCTURAL RULES (Tactile Glass UI)
+   ========================================================================== */
+
+.tactile-glass-fx {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tactile-btn {
+  position: relative;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  color: var(--text-primary);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  outline: none;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+  font-family: var(--font-sans);
+  text-decoration: none;
+  user-select: none;
+  flex-shrink: 0;
+  height: var(--btn-h);
+  border-radius: var(--btn-radius);
+  padding: 0 var(--btn-pad-h);
+  gap: var(--space-12);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tactile-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tactile-btn .btn-label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  letter-spacing: var(--letter-spacing-tight);
+  white-space: nowrap;
+  transition: font-size 0.2s ease;
+}
+
+.tactile-btn .btn-icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  transition: transform 0.2s ease, width 0.2s ease, height 0.2s ease;
+  flex-shrink: 0;
+}
+
+.tactile-btn:hover .btn-icon {
+  transform: translateX(var(--space-2));
+}
+
+.tactile-btn.btn-circle {
+  width: var(--btn-h);
+  height: var(--btn-h);
+  padding: 0;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  background: transparent;
+  aspect-ratio: 1 / 1;
+}
+
+.tactile-btn.btn-circle:hover .btn-icon {
+  transform: scale(1.12);
+}
+
+.tactile-switch {
+  position: relative;
+  pointer-events: auto;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--switch-w);
+  height: var(--switch-h);
+  border-radius: calc(var(--switch-h) / 2);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tactile-switch:focus-visible {
+  outline: var(--space-2) solid var(--focus-ring-color);
+  outline-offset: var(--space-2);
+}
+
+.tactile-switch:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tactile-switch .switch-thumb {
+  position: absolute;
+  border-radius: var(--radius-full);
+  background: transparent;
+  box-shadow: none;
+  width: var(--switch-thumb-size);
+  height: var(--switch-thumb-size);
+  top: var(--switch-pad);
+  left: var(--switch-pad);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.tactile-switch.active .switch-thumb,
+.tactile-switch[aria-checked="true"] .switch-thumb {
+  transform: translateX(var(--switch-travel));
+}
+
+.tactile-tabs {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  height: var(--tabs-h);
+  padding: var(--space-4);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  user-select: none;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tactile-tabs .tabs-indicator {
+  position: absolute;
+  left: 0;
+  top: var(--space-4);
+  height: var(--tabs-item-h);
+  border-radius: var(--radius-full);
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.tactile-tabs .tab-item {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-12);
+  height: var(--tabs-item-h);
+  padding: 0 var(--space-24);
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  outline: none;
+  transition: color 0.15s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tactile-tabs .tab-item:hover,
+.tactile-tabs .tab-item.active {
+  color: var(--text-primary);
+}
+
+.tactile-tabs .tab-item:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  color: var(--text-muted);
+}
+
+.tactile-tabs .tab-item:focus-visible {
+  outline: var(--space-2) solid var(--focus-ring-color);
+  outline-offset: var(--space-2);
+}
+
+.tactile-prompt-box {
+  position: relative;
+  pointer-events: auto;
+  width: min(100%, var(--prompt-box-w));
+  border-radius: var(--prompt-box-radius);
+  padding: var(--prompt-box-pad);
+  background: transparent;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  user-select: none;
+}
+
+.prompt-body {
+  width: 100%;
+}
+
+.prompt-textarea {
+  width: 100%;
+  min-height: var(--prompt-textarea-min-h);
+  max-height: var(--prompt-textarea-max-h);
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  caret-color: var(--text-primary);
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.prompt-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.prompt-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+}
+
+.prompt-pills-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.prompt-mention-btn {
+  width: var(--prompt-pill-h);
+  height: var(--prompt-pill-h);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-elevated);
+  border: none;
+  outline: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.prompt-mention-btn:hover {
+  background: var(--bg-elevated-hover);
+  color: var(--text-primary);
+}
+
+.prompt-mention-btn:active {
+  background: var(--bg-elevated-active);
+  transform: scale(0.95);
+}
+
+.prompt-pill {
+  height: var(--prompt-pill-h);
+  padding: 0 var(--space-16);
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  border: none;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.prompt-pill:hover {
+  background: var(--bg-elevated-hover);
+  color: var(--text-primary);
+}
+
+.prompt-pill:active {
+  background: var(--bg-elevated-active);
+  transform: scale(0.97);
+}
+
+.prompt-submit-btn {
+  width: var(--prompt-submit-size);
+  height: var(--prompt-submit-size);
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  border: none;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+}
+
+.prompt-submit-btn:hover {
+  background: var(--bg-elevated-hover);
+  transform: scale(1.04);
+}
+
+.prompt-submit-btn:active {
+  background: var(--bg-elevated-active);
+  transform: scale(0.94);
+}
+
+.prompt-submit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.prompt-submit-icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  stroke: currentColor;
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.tactile-heading-container {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--heading-max-w);
+}
+
+.tactile-heading-badge {
+  margin-bottom: var(--space-16);
+  display: inline-flex;
+  align-items: center;
+}
+
+.display-heading,
+.tactile-heading-title {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: var(--letter-spacing-display);
+  line-height: var(--line-height-none);
+  width: 100%;
+  user-select: none;
+  font-size: var(--font-size-display);
+  text-wrap: balance;
+  margin: 0;
+}
+
+.tactile-heading-subtitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-secondary);
+  max-width: var(--subtitle-max-w);
+  margin-top: var(--space-16);
+}
+
+.tactile-glass-word {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+  line-height: inherit;
+  border: none;
+  background: transparent;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tactile-card.tactile-credit-card {
+  position: relative;
+  border: none;
+  background: transparent;
+  outline: none;
+  box-sizing: border-box;
+  cursor: default;
+  user-select: none;
+  pointer-events: auto;
+  overflow: visible;
+  aspect-ratio: 1.5857;
+  width: min(100%, var(--card-w));
+  height: auto;
+  padding: var(--card-pad);
+  border-radius: var(--card-radius);
+  transform-style: preserve-3d;
+  transform: rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.credit-card-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.credit-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.credit-card-contactless {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  color: var(--card-icon-muted);
+  transition: color 0.2s ease;
+}
+
+.tactile-card:hover .credit-card-contactless {
+  color: var(--card-text);
+}
+
+.credit-card-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.credit-card-bank-name {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-ultra);
+  color: var(--card-text);
+}
+
+.credit-card-tier {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wider);
+  color: var(--card-icon-muted);
+  text-transform: uppercase;
+  margin-top: var(--space-4);
+}
+
+.credit-card-number {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-widest);
+  color: var(--card-text);
+  margin: var(--space-8) 0;
+  user-select: all;
+}
+
+.credit-card-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.credit-card-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.credit-card-value {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wider);
+  color: var(--card-text);
+  text-transform: uppercase;
+}
+
+.credit-card-network {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: var(--card-network-w);
+  height: var(--card-network-circle-size);
+}
+
+.network-circle {
+  width: var(--card-network-circle-size);
+  height: var(--card-network-circle-size);
+  border-radius: var(--radius-full);
+  position: absolute;
+  border: none;
+  backdrop-filter: blur(var(--space-2));
+}
+
+.network-circle-left {
+  left: 0;
+  background: var(--card-network-left-bg);
+}
+
+.network-circle-right {
+  right: 0;
+  background: var(--card-network-right-bg);
+  mix-blend-mode: screen;
+}
+
+.tactile-audio-player {
+  position: relative;
+  border: none;
+  background: transparent;
+  outline: none;
+  box-sizing: border-box;
+  cursor: default;
+  user-select: none;
+  pointer-events: auto;
+  overflow: visible;
+  aspect-ratio: 480 / 304;
+  width: min(100%, var(--audio-w));
+  height: auto;
+  padding: var(--audio-pad-top) var(--audio-pad-h) var(--audio-pad-bottom);
+  border-radius: var(--audio-radius);
+  transform-style: flat;
+  transform: perspective(var(--perspective-3d)) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tactile-audio-player .audio-spectrum-front {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tactile-audio-player .audio-player-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.tactile-audio-player .audio-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  width: 100%;
+}
+
+.tactile-audio-player .audio-track-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-snug);
+  color: var(--text-primary);
+}
+
+.tactile-audio-player .audio-like-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--audio-like-btn-size);
+  height: var(--audio-like-btn-size);
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.tactile-audio-player .audio-like-btn:hover,
+.tactile-audio-player .audio-like-btn[aria-pressed="true"] {
+  color: var(--text-primary);
+}
+
+.tactile-audio-player .audio-like-btn:hover {
+  transform: scale(1.08);
+}
+
+.tactile-audio-player .audio-like-btn:active {
+  transform: scale(0.94);
+}
+
+.tactile-audio-player .audio-like-btn svg {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+.tactile-audio-player .audio-timeline-group {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 100%;
+  pointer-events: auto;
+}
+
+.tactile-audio-player .audio-progress-hit {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--space-4);
+  padding: var(--space-8) 0;
+  margin: calc(var(--space-8) * -1) 0;
+  box-sizing: content-box;
+  cursor: pointer;
+  outline: none;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.tactile-audio-player .audio-progress-track {
+  position: relative;
+  width: 100%;
+  height: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated-hover);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tactile-audio-player .audio-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--radius-full);
+  background: var(--text-primary);
+  pointer-events: none;
+}
+
+.tactile-audio-player .audio-time-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: var(--space-16);
+  line-height: var(--line-height-tight);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  pointer-events: none;
+}
+
+.tactile-audio-player .audio-controls-dock {
+  position: absolute;
+  left: 50%;
+  bottom: var(--audio-transport-offset);
+  transform: translateX(-50%) scale(var(--audio-scale));
+  transform-origin: 50% 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.tactile-audio-player .audio-transport-btn {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--audio-btn-sec-size);
+  height: var(--audio-btn-sec-size);
+  border-radius: var(--radius-full);
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.tactile-audio-player .audio-transport-btn svg {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+.tactile-audio-player .audio-play-btn {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--audio-btn-play-size);
+  height: var(--audio-btn-play-size);
+  margin: 0 calc(var(--space-4) * -1);
+  border-radius: var(--radius-full);
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.tactile-audio-player .audio-play-btn svg {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+.tactile-background {
+  position: relative;
+  width: 100%;
+  min-height: var(--bg-panel-min-h);
+  padding: var(--bg-panel-pad);
+  border-radius: var(--bg-panel-radius);
+  border: none;
+  background: transparent;
+  outline: none;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  pointer-events: auto;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}

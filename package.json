@@ -1,0 +1,76 @@
+{
+  "name": "tactile-glass-ui",
+  "version": "0.1.0",
+  "description": "Real-time WebGL2 optical glass components for React — physical Snell refraction, concentric SDF bevel normals, RGB chromatic dispersion, procedural FBM liquid caustics, and interactive pointer shockwaves.",
+  "license": "MIT",
+  "author": "uixNinja (https://github.com/uixninja)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uixninja/tactile-glass-ui.git"
+  },
+  "homepage": "https://github.com/uixninja/tactile-glass-ui#readme",
+  "bugs": {
+    "url": "https://github.com/uixninja/tactile-glass-ui/issues"
+  },
+  "keywords": [
+    "react",
+    "webgl",
+    "webgl2",
+    "glsl",
+    "glassmorphism",
+    "liquid-glass",
+    "refraction",
+    "caustics",
+    "sdf",
+    "ui-components",
+    "design-system"
+  ],
+  "type": "module",
+  "main": "./dist-lib/index.cjs",
+  "module": "./dist-lib/index.js",
+  "types": "./dist-lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist-lib/index.d.ts",
+      "import": "./dist-lib/index.js",
+      "require": "./dist-lib/index.cjs"
+    },
+    "./tokens.css": "./dist-lib/tokens.css",
+    "./components.css": "./dist-lib/components.css",
+    "./styles.css": "./dist-lib/styles.css",
+    "./SKILL.md": "./SKILL.md",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist-lib",
+    "SKILL.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "BUILD_TARGET=lib vite build && tsc src/index.ts --declaration --emitDeclarationOnly --jsx react-jsx --module ESNext --moduleResolution bundler --target ES2022 --skipLibCheck --outDir dist-lib --rootDir src",
+    "prepublishOnly": "npm run build:lib",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "lucide": "^1.54.0",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
+  }
+}

@@ -1,0 +1,197 @@
+:root {
+  /* ==========================================================================
+     LAYER 1: FOUNDATION PRIMITIVES
+     ========================================================================== */
+
+  /* 1.1 Spacing Scale (Strict 4px grid, with 2px micro-step for compact insets) */
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-36: 36px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-56: 56px;
+  --space-64: 64px;
+  --space-80: 80px;
+  --space-96: 96px;
+
+  /* 1.2 Border Radii
+     - sm (8px): Inline code tags
+     - md (12px): Sidebar navigation items and icon boxes
+     - lg (16px): Major containers (.stage-block, .settings-panel, .doc-code-box)
+     - xl..3xl: Optical WebGL glass component hulls (Prompt, Card, Audio)
+     - full (9999px): Capsule buttons, shell actions, reset buttons, badges, and pills */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
+  --radius-3xl: 32px;
+  --radius-full: 9999px;
+
+  /* 1.3 Surfaces, Borders & Text Hierarchy (3-Tier Z-Axis Elevation: Canvas -> Surface -> Elevated)
+     - bg-canvas (Z0): Root page and transparent WebGL stage backdrop
+     - bg-surface / hover / active (Z1): Primary containers and controls sitting directly on canvas (inspector panels, code blocks, shell buttons, sidebar items, and mobile nav pills)
+     - bg-elevated / hover / active (Z2): Nested elements sitting inside a surface (sidebar icon boxes, inspector Reset buttons, version badge, inline code tags, segmented state track, and prompt pills)
+     - border-subtle: Delicate 1px structural outline for the stage block
+     - text-primary / secondary / muted: 3-tier typographic contrast hierarchy */
+  --bg-canvas: #141517;
+  --bg-surface: rgba(27, 30, 33, 0.88);
+  --bg-surface-hover: rgba(32, 36, 42, 0.92);
+  --bg-surface-active: rgba(42, 47, 55, 0.96);
+  --bg-elevated: rgba(255, 255, 255, 0.08);
+  --bg-elevated-hover: rgba(255, 255, 255, 0.14);
+  --bg-elevated-active: rgba(255, 255, 255, 0.20);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+
+  --text-primary: #ffffff;
+  --text-secondary: #9da0a6;
+  --text-muted: #71757e;
+  --focus-ring-color: rgba(255, 255, 255, 0.40);
+
+  /* 1.4 Typography Scale
+     - xs (11px): Badges, slider values, compact labels
+     - sm (12px): Sidebar navigation, shell buttons, code snippets, timecodes, site footer
+     - md (14px): Body descriptions (.stage-subtitle, .doc-section-desc), panel headers, brand title
+     - base (16px): Primary interactive component labels (Button, Tabs, Prompt, Card brand)
+     - lg (20px): Documentation section headings (H2) and audio track title
+     - xl (24px): Embossed credit card number groups
+     - 2xl (36px): Active component page heading (H1)
+     - display: Fluid container-responsive hero typography (Tactile Heading) */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'SF Pro', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 36px;
+  --font-size-display: clamp(var(--space-32), 11.5cqw, var(--space-80));
+
+  /* Font Weights
+     - regular (400): Body copy, descriptions, inactive nav items, slider labels, code, card number, footer
+     - medium (500): All headings (H1, H2, brand, panel headers), active nav item, shell action buttons, badges, tabs, prompt pills, slider values, footer author
+     - semibold (600): Primary button CTA, audio track title & timecodes, card metadata
+     - extrabold (800): Hero display typography (Tactile Heading) */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-extrabold: 800;
+
+  /* Line Heights & Letter Spacing
+     - line-height-none (1.0): Hero display typography (Tactile Heading & Hero Stage)
+     - line-height-tight (16px): Compact numeric rows (.audio-time-row)
+     - line-height-snug (24px): Monospace code blocks (.code-panel-pre)
+     - line-height-relaxed (1.5): Body copy, subtitles, descriptions, and prompt textarea
+     - line-height-2xl (44px): Active component page heading (.stage-title)
+     - letter-spacing-tighter (-0.04em): Active component page heading (.stage-title)
+     - letter-spacing-display (-0.025em): Hero display typography (Tactile Heading & Hero Stage)
+     - letter-spacing-tight (-0.015em): Section headings (.doc-section-title) & primary button CTA (.btn-label)
+     - letter-spacing-snug (-0.01em): Brand title, panel headers, and audio track title
+     - letter-spacing-wide (0.04em): Segmented state pill labels (.state-btn)
+     - letter-spacing-wider (0.08em): Credit card metadata values (.credit-card-value)
+     - letter-spacing-widest (0.10em): Embossed credit card number (.credit-card-number)
+     - letter-spacing-ultra (0.22em): Credit card bank wordmark (.credit-card-bank-name) */
+  --line-height-none: 1.0;
+  --line-height-tight: var(--space-16);
+  --line-height-snug: var(--space-24);
+  --line-height-relaxed: 1.5;
+  --line-height-2xl: 44px;
+  --letter-spacing-tighter: -0.04em;
+  --letter-spacing-display: -0.025em;
+  --letter-spacing-tight: -0.015em;
+  --letter-spacing-snug: -0.01em;
+  --letter-spacing-wide: 0.04em;
+  --letter-spacing-wider: 0.08em;
+  --letter-spacing-widest: 0.10em;
+  --letter-spacing-ultra: 0.22em;
+
+  /* 1.5 Iconography (Strict 4px grid) */
+  --icon-sm: var(--space-16);
+  --icon-md: var(--space-20);
+  --icon-lg: var(--space-24);
+
+  /* ==========================================================================
+     LAYER 2: SEMANTIC SHELL & COMPONENT TOKENS
+     ========================================================================== */
+
+  /* 2.1 Shell Layout & Controls
+     - control-h-sm (32px): Icon-only copy buttons inside code blocks
+     - control-h-md (40px): Shell action buttons (Copy Prompt, SKILL.md, GitHub), Reset buttons, and mobile nav pills */
+  --sidebar-nav-w: 220px;
+  --sidebar-settings-w: 304px;
+  --inspector-label-w: 88px;
+  --inspector-value-w: var(--space-36);
+  --heading-max-w: 920px;
+  --subtitle-max-w: 680px;
+  --perspective-3d: 1000px;
+  --control-h-sm: var(--space-32);
+  --control-h-md: var(--space-40);
+
+  /* 2.2 Tactile Button (Unified 56px height) */
+  --btn-h: var(--space-56);
+  --btn-radius: var(--radius-2xl);
+  --btn-pad-h: var(--space-32);
+
+  /* 2.3 Tactile Switch (Unified 104x56px hull + molded 48px optical glass thumb dome) */
+  --switch-w: 104px;
+  --switch-h: var(--space-56);
+  --switch-pad: var(--space-4);
+  --switch-thumb-size: var(--space-48);
+  --switch-travel: var(--space-48);
+
+  /* 2.4 Tactile Tabs (Unified 56px hull + molded 48px optical glass capsule indicator) */
+  --tabs-h: var(--space-56);
+  --tabs-item-h: var(--space-48);
+
+  /* 2.5 Tactile Prompt Input */
+  --prompt-box-w: 580px;
+  --prompt-box-radius: var(--radius-xl);
+  --prompt-box-pad: var(--space-20);
+  --prompt-pill-h: var(--space-40);
+  --prompt-submit-size: var(--space-40);
+  --prompt-textarea-min-h: var(--space-48);
+  --prompt-textarea-max-h: 160px;
+
+  /* 2.6 Tactile Credit Card (ISO/IEC 7810 ID-1 ratio ~1.586) */
+  --card-w: 444px;
+  --card-radius: var(--radius-xl);
+  --card-pad: var(--space-24);
+  --card-network-w: var(--space-48);
+  --card-network-circle-size: var(--space-32);
+  --card-icon-muted: rgba(255, 255, 255, 0.55);
+  --card-text: rgba(255, 255, 255, 0.92);
+  --card-network-left-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.05) 100%);
+  --card-network-right-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 100%);
+
+  /* 2.7 Tactile Spatial Audio Player (480x304px) */
+  --audio-w: 480px;
+  --audio-radius: var(--radius-3xl);
+  --audio-pad-top: var(--space-28);
+  --audio-pad-h: var(--space-32);
+  --audio-pad-bottom: var(--space-48);
+  --audio-btn-sec-size: var(--space-56);
+  --audio-btn-play-size: var(--space-80);
+  --audio-like-btn-size: var(--space-36);
+  --audio-transport-offset: -40px;
+  --audio-scale: 1;
+
+  /* 2.8 Tactile Background (Full-section / Hero Optical Glass Panel) */
+  --bg-panel-min-h: 360px;
+  --bg-panel-radius: var(--radius-lg);
+  --bg-panel-pad: var(--space-32);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --font-size-2xl: 28px;
+    --line-height-2xl: 36px;
+  }
+}
