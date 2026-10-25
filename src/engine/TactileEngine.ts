@@ -428,29 +428,35 @@ export const FRAGMENT_SHADER = `#version 300 es
     return glow;
   }
 
-  vec3 sampleBackdropPixel(vec2 uv) {
+  vec4 sampleBackdropRGBA(vec2 uv) {
+    if (u_srcComposite < -0.5) {
+      return vec4(0.0);
+    }
     vec2 uvSafe = 1.0 - abs(1.0 - abs(uv));
     if (u_srcComposite > 1.5) {
       vec4 s = texture(u_src, vec2(uvSafe.x, 1.0 - uvSafe.y));
-      return s.rgb + u_bgColor * (1.0 - s.a);
+      return vec4(s.rgb * s.a, s.a);
     }
     if (u_srcComposite > 0.5) {
       vec4 s = texture(u_src, uvSafe);
-      return s.rgb + u_bgColor * (1.0 - s.a);
+      return vec4(s.rgb + u_bgColor * (1.0 - s.a), 1.0);
     }
     vec2 uvTex = vec2(uvSafe.x, 1.0 - uvSafe.y);
-    return mix(u_bgColor, vec3(1.0), texture(u_src, uvTex).a);
+    return vec4(mix(u_bgColor, vec3(1.0), texture(u_src, uvTex).a), 1.0);
   }
 
-  vec3 sampleFrosted(vec2 uv, float frostAmt) {
-    vec3 centerCol = sampleBackdropPixel(uv);
+  vec4 sampleFrostedRGBA(vec2 uv, float frostAmt) {
+    if (u_srcComposite < -0.5) {
+      return vec4(0.0);
+    }
+    vec4 centerCol = sampleBackdropRGBA(uv);
     if (frostAmt <= 0.01) return centerCol;
 
     // Real GPU Frosted Glass Diffusion (Golden-Angle Fermat Spiral Blur)
     vec2 texel = 1.0 / u_resolution;
     float radius = frostAmt * 40.0;
     
-    vec3 accumCol = centerCol * 0.20;
+    vec4 accumCol = centerCol * 0.20;
     float totalW = 0.20;
 
     for (int i = 1; i <= 10; i++) {
@@ -460,14 +466,15 @@ export const FRAGMENT_SHADER = `#version 300 es
       vec2 offset = vec2(cos(theta), sin(theta)) * r * texel;
       
       float w = exp(-0.5 * (r * r) / max(radius * radius * 0.4, 1.0));
-      accumCol += sampleBackdropPixel(uv + offset) * w;
+      accumCol += sampleBackdropRGBA(uv + offset) * w;
       totalW += w;
     }
 
     return accumCol / totalW;
   }
 
-  vec4 renderSingleGlassLens(vec2 screenPx, vec4 rect, float radius, bool isThumb) {
+  vec4 renderSingleGlassLens(vec2 screenPx, vec4 rect, float radius, bool isThumb, out float outBaseAlpha) {
+    outBaseAlpha = 1.0;
     vec2 center = rect.xy + rect.zw * 0.5;
     vec2 localPx = screenPx - center;
     vec2 halfSize = rect.zw * 0.5;
@@ -690,24 +697,26 @@ export const FRAGMENT_SHADER = `#version 300 es
     float dispSpread = (u_dispersion * 0.01) * (contourFactor * 0.85 + 0.15);
 
     // 3. Chromatic Background Refraction (smooth spectral split without negative delta)
-    vec3 bg = sampleFrosted(v_uv - disp, frostVal);
-    vec3 bgSpectral = bg;
+    vec4 bgSample = sampleFrostedRGBA(v_uv - disp, frostVal);
+    vec3 bgSpectral = bgSample.rgb;
+    float bgAlpha = bgSample.a;
 
-    if (dispSpread > 0.0005) {
+    if (dispSpread > 0.0005 && bgAlpha > 0.001) {
       vec2 dR = disp * (1.0 - dispSpread * 0.85);
       vec2 dY = disp * (1.0 - dispSpread * 0.40);
       vec2 dC = disp * (1.0 + dispSpread * 0.40);
       vec2 dB = disp * (1.0 + dispSpread * 0.85);
 
-      vec3 sR_bg = sampleFrosted(v_uv - dR, frostVal);
-      vec3 sY_bg = sampleFrosted(v_uv - dY, frostVal);
-      vec3 sC_bg = sampleFrosted(v_uv - dC, frostVal);
-      vec3 sB_bg = sampleFrosted(v_uv - dB, frostVal);
+      vec4 sR_bg = sampleFrostedRGBA(v_uv - dR, frostVal);
+      vec4 sY_bg = sampleFrostedRGBA(v_uv - dY, frostVal);
+      vec4 sC_bg = sampleFrostedRGBA(v_uv - dC, frostVal);
+      vec4 sB_bg = sampleFrostedRGBA(v_uv - dB, frostVal);
 
       float rEdge = sR_bg.r * 0.60 + sY_bg.r * 0.40;
-      float gEdge = sY_bg.g * 0.35 + bg.g * 0.30 + sC_bg.g * 0.35;
+      float gEdge = sY_bg.g * 0.35 + bgSample.g * 0.30 + sC_bg.g * 0.35;
       float bEdge = sC_bg.b * 0.40 + sB_bg.b * 0.60;
       bgSpectral = vec3(rEdge, gEdge, bEdge);
+      bgAlpha = (sR_bg.a + sY_bg.a + bgSample.a + sC_bg.a + sB_bg.a) * 0.20;
     }
 
     vec2 hitPxG = (v_uv - (dispBevel + dispDome + dispFluid * 0.25) * edgeTaper) * u_resolution;
@@ -778,14 +787,12 @@ export const FRAGMENT_SHADER = `#version 300 es
       causticEmission += (prismAccent - 0.45) * (fG_body * totalFluidFactor * edgeTaper * clamp(u_dispersion * 0.012, 0.0, 1.0) * (1.0 + contourFactor * 1.5));
     }
 
-    vec3 baseSample = bgSpectral + causticEmission;
-
     // Smoked Glass Absorption Tint (obsidian glass)
     float absorptionScale = 0.5 + (u_thickness * 0.01) * 0.8;
     float darkFactor = clamp((u_darkness * 0.01) * absorptionScale, 0.0, 0.95);
     float bevelThickness = 1.0 - bevelSlope * 0.35;
+    float darkAtten = darkFactor * bevelThickness * 0.85;
     vec3 obsidianTint = u_bgColor * 0.45;
-    vec3 lensCol = mix(baseSample, obsidianTint, darkFactor * bevelThickness * 0.85);
 
     // Clean, crisp achromatic specular gleam strictly on the contour facing light
     vec2 lightDir2D = vec2(cos(u_lightAngle), sin(u_lightAngle));
@@ -820,8 +827,33 @@ export const FRAGMENT_SHADER = `#version 300 es
       );
     }
 
-    // Add crisp optical highlights with prismatic flare
-    lensCol += (mainGleam + backGleam) * gleamColor + vec3(edgeRim);
+    vec3 lensCol = vec3(0.0);
+    if (u_srcComposite < -0.5 || u_srcComposite > 1.5) {
+      float domTransparency = 1.0 - bgAlpha;
+      float absorbAlpha = darkAtten * 0.75;
+      outBaseAlpha = clamp(bgAlpha + absorbAlpha * domTransparency, 0.0, 1.0);
+
+      vec3 baseCol = bgSpectral * (1.0 - absorbAlpha) + (u_bgColor * 0.35) * (absorbAlpha * domTransparency);
+      vec3 opticalEmit = causticEmission * (1.0 - darkAtten * 0.65);
+
+      if (u_isText > 0.5) {
+        float bRad = max(u_bevelWidth * 1.2, 4.0);
+        float strokeDome = cos(clamp(distIn / bRad, 0.0, 1.0) * 1.5707963);
+        float glyphFresnel = (0.045 + 0.095 * strokeDome) * (0.45 + (u_refraction * 0.01) * 0.55) * (0.45 + frostVal * 0.55) * (1.0 - darkAtten * 0.7) * textFade;
+        opticalEmit += mix(vec3(1.0), auroraColor, dispFactor * 0.40) * (glyphFresnel * domTransparency);
+      } else if (!isFullBleed) {
+        float bevelFresnel = contourFactor * (0.04 + (u_refraction * 0.01) * 0.06) * (0.5 + (u_thickness * 0.01) * 0.5) * edgeTaper;
+        float frostVeil = (frostVal * 0.03 + (u_sheen * 0.01) * 0.012) * (1.0 - darkAtten * 0.7) * edgeTaper;
+        opticalEmit += (vec3(bevelFresnel) * gleamColor + vec3(frostVeil)) * domTransparency;
+      }
+
+      lensCol = baseCol + opticalEmit + (mainGleam + backGleam) * gleamColor + vec3(edgeRim);
+    } else {
+      outBaseAlpha = 1.0;
+      vec3 baseSample = bgSpectral + causticEmission;
+      lensCol = mix(baseSample, obsidianTint, darkAtten);
+      lensCol += (mainGleam + backGleam) * gleamColor + vec3(edgeRim);
+    }
 
     if (u_isAudioDeck > 0.5) {
       // Convex molded-glass dome relief along the mutual Boolean union boundary of the transport buttons
@@ -885,7 +917,8 @@ export const FRAGMENT_SHADER = `#version 300 es
   }
 
   vec4 renderGlassLens(vec2 screenPx, vec4 rect, float radius) {
-    vec4 lens = renderSingleGlassLens(screenPx, rect, radius, false);
+    float baseAlpha = 1.0;
+    vec4 lens = renderSingleGlassLens(screenPx, rect, radius, false, baseAlpha);
     if (u_switchThumb.z > 0.5 && u_switchThumb.w > 0.5 && lens.a > 0.0) {
       vec2 trackCenter = rect.xy + rect.zw * 0.5;
       vec2 thumbCenter = trackCenter + u_switchThumb.xy;
@@ -947,7 +980,14 @@ export const FRAGMENT_SHADER = `#version 300 es
         lens.rgb += ((domeCushion + edgeHighlight) * domeGleamColor) * thumbTaper;
       }
     }
-    return lens;
+    if (u_srcComposite < -0.5 || u_srcComposite > 1.5) {
+      float coverage = lens.a;
+      vec3 clampedRGB = clamp(lens.rgb, 0.0, 1.0);
+      float lightPeak = max(clampedRGB.r, max(clampedRGB.g, clampedRGB.b));
+      float finalAlpha = clamp(baseAlpha + lightPeak * (1.0 - baseAlpha), 0.0, 1.0) * coverage;
+      return vec4(clampedRGB * coverage, finalAlpha);
+    }
+    return vec4(lens.rgb * lens.a, lens.a);
   }
 
   void main() {
@@ -957,8 +997,7 @@ export const FRAGMENT_SHADER = `#version 300 es
       return;
     }
     vec2 screenPx = v_uv * u_resolution;
-    vec4 lens = renderGlassLens(screenPx, u_rect, u_radius);
-    fragColor = vec4(lens.rgb * lens.a, lens.a);
+    fragColor = renderGlassLens(screenPx, u_rect, u_radius);
   }
 `;
 
@@ -1472,11 +1511,11 @@ export class SharedCausticEngine {
           if (this.uSrcComposite) gl.uniform1f(this.uSrcComposite, 2.0);
         } else {
           gl.bindTexture(gl.TEXTURE_2D, this.bgTexture);
-          if (this.uSrcComposite) gl.uniform1f(this.uSrcComposite, 0.0);
+          if (this.uSrcComposite) gl.uniform1f(this.uSrcComposite, -1.0);
         }
       } else {
         gl.bindTexture(gl.TEXTURE_2D, this.bgTexture);
-        if (this.uSrcComposite) gl.uniform1f(this.uSrcComposite, 0.0);
+        if (this.uSrcComposite) gl.uniform1f(this.uSrcComposite, -1.0);
       }
       if (this.uSrc) gl.uniform1i(this.uSrc, 0);
 
@@ -1486,6 +1525,14 @@ export class SharedCausticEngine {
       inst.curMouseY += (inst.targetMouseY - inst.curMouseY) * 0.14;
 
       const p = inst.getParams();
+      if (!inst.textMask && !inst.isAudioDeck) {
+        const blurPx = p.frost > 1 ? Math.round(p.frost * 0.25 * 10) / 10 : 0;
+        const bf = blurPx > 0 ? `blur(${blurPx}px)` : "";
+        if (canvas.style.backdropFilter !== bf) {
+          canvas.style.backdropFilter = bf;
+          (canvas.style as any).webkitBackdropFilter = bf;
+        }
+      }
       const bgCol = resolveElementBgColor(canvas);
       if (this.uBgColor) gl.uniform3f(this.uBgColor, bgCol[0], bgCol[1], bgCol[2]);
 

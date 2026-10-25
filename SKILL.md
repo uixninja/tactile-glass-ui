@@ -40,7 +40,7 @@ All components on a page share a single offscreen WebGL2 rendering context (`Sha
 - **One Focal Glass Element per Viewport Zone:** Physical refraction and chromatic dispersion command visual hierarchy. Avoid placing multiple glass components immediately adjacent to one another unless they form a single paired control (such as a pill CTA beside a circle icon button).
 - **Avoid High-Density Repetition:** Do not mount WebGL glass hulls inside long data tables, virtualized lists, or repeated feed rows.
 - **No Nested Glass Hulls:** Never wrap a `TactileButton` or `TactileSwitch` inside another `<TactileGlassFx>` container.
-- **Dark Surface Contrast:** Specular bevel rims, Fresnel edge highlights, and internal caustics are calibrated for dark surfaces. The engine automatically samples the nearest ancestor's CSS `background-color` to tint the glass body.
+- **Dark Surface Contrast & True Alpha Transparency:** Specular bevel rims, Fresnel edge highlights, and internal caustics are calibrated for dark surfaces. When mounted standalone over any DOM layout (CSS grids, gradients, images, or text), `SharedCausticEngine` renders a genuinely transparent glass core (`darkness={0}` applies zero opaque fill), syncs native CSS `backdrop-filter: blur(...)` to the `frost` prop, and composites parent caustics automatically when nested inside `<TactileBackground>`.
 
 ---
 
@@ -67,7 +67,7 @@ When asked to inspect a project or integrate `tactile-glass-ui`, follow this thr
 ### Stage 2: Package Installation & Client Boundary
 1. Detect the project's package manager from its lockfile (`pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`, or `package-lock.json`) and install `tactile-glass-ui`:
    ```bash
-   npm install tactile-glass-ui
+   npm install tactile-glass-ui@latest
    ```
 2. Design system CSS tokens are imported automatically by `'tactile-glass-ui'` — no manual stylesheet import is required.
 3. In Next.js App Router or SSR environments, ensure any file rendering a `tactile-glass-ui` component declares `"use client"` at the top.
@@ -229,7 +229,7 @@ All components and `<TactileGlassFx>` accept these 18 optical props. `<TactileSw
   Every glass component must remain a transparent geometric hull (`background: transparent; border: none; box-shadow: none;`). All bevel contours, specular rims, and surface fills are computed in GLSL.
 - **DO maintain `borderRadius > bevelWidth` on rounded containers.**
   The SDF shader computes inner bevel isolines at `radius - bevelWidth`. Keeping the CSS `border-radius` strictly greater than `bevelWidth` prevents sharp diagonal creases in the normal field.
-- **DO let the engine sample parent background colors naturally.**
-  `SharedCausticEngine` walks up the DOM tree to read the nearest non-transparent `backgroundColor` and passes it to `u_bgColor`. Set background colors on parent sections or page containers rather than on the glass element itself.
+- **DO keep parent grids, gradients, and backgrounds visible behind the glass hull.**
+  In standalone DOM mode, `SharedCausticEngine` outputs true premultiplied alpha transparency in the glass interior (controlled by `darkness`) and drives native CSS `backdrop-filter: blur(...)` from the `frost` prop so underlying page grids, typography, and imagery shine through naturally. When placed inside `<TactileBackground>`, child components automatically refract the parent WebGL canvas.
 - **DO preserve accessibility attributes.**
   Always provide `aria-label` on icon-only `<TactileButton shape="circle">` instances. `<TactileSwitch>` (`role="switch"`) and `<TactileTabs>` (`role="tablist"`) include built-in keyboard navigation (`Space`/`Enter` and `ArrowLeft`/`ArrowRight`).

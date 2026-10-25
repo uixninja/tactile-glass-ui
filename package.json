@@ -1,6 +1,6 @@
 {
   "name": "tactile-glass-ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Real-time WebGL2 optical glass components for React — physical Snell refraction, concentric SDF bevel normals, RGB chromatic dispersion, procedural FBM liquid caustics, and interactive pointer shockwaves.",
   "license": "MIT",
   "author": "uixNinja (https://github.com/uixninja)",

@@ -415,7 +415,7 @@ function buildComponentExport(comp: string): {
     `Add the ${title} (${importName}) component from tactile-glass-ui to my React app.`,
     ``,
     `1. Install:`,
-    `npm install tactile-glass-ui`,
+    `npm install tactile-glass-ui@latest`,
     ``,
     `2. Usage:`,
     ``,
@@ -628,7 +628,7 @@ const btnCopyInstall = document.getElementById("btn-copy-install");
 if (btnCopyInstall) {
   btnCopyInstall.addEventListener("click", () => {
     if (navigator.clipboard) {
-      navigator.clipboard.writeText("npm install tactile-glass-ui").catch(() => {});
+      navigator.clipboard.writeText("npm install tactile-glass-ui@latest").catch(() => {});
     }
     triggerCopyFeedback(
       btnCopyInstall,

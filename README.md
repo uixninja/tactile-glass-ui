@@ -2,14 +2,14 @@
 
 Real-time **WebGL2 optical glass components** for React — physical Snell refraction, concentric SDF bevel normals, RGB chromatic dispersion, procedural FBM liquid caustics, and interactive pointer shockwaves.
 
-All components on a page share a single offscreen WebGL2 rendering context (`SharedCausticEngine`) and automatically pause when offscreen or when the browser tab is inactive.
+All components on a page share a single offscreen WebGL2 rendering context (`SharedCausticEngine`) with true premultiplied alpha transparency, native `backdrop-filter` frost blur over any DOM background (grids, gradients, images), automatic parent WebGL canvas compositing when nested inside `<TactileBackground>`, and automatic idle pausing when offscreen or when the browser tab is inactive.
 
 ---
 
 ## Installation
 
 ```bash
-npm install tactile-glass-ui
+npm install tactile-glass-ui@latest
 ```
 
 Design system CSS tokens and structural rules are injected automatically when importing from `'tactile-glass-ui'`.
